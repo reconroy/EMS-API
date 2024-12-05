@@ -12,6 +12,8 @@ namespace EMS.Data
         public DbSet<Payroll> Payrolls { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Designation> Designations { get; set; }
 
         public EMSDbContext(DbContextOptions<EMSDbContext> options) : base(options) 
         {

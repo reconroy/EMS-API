@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EMS.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +46,21 @@ namespace EMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Departments", x => x.DeptID);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Designations",
+                columns: table => new
+                {
+                    DesignationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DesignationName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Designations", x => x.DesignationID);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -144,6 +159,21 @@ namespace EMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    LocationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    LocationName = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.LocationID);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Payrolls",
                 columns: table => new
                 {
@@ -194,6 +224,9 @@ namespace EMS.Migrations
                 name: "Departments");
 
             migrationBuilder.DropTable(
+                name: "Designations");
+
+            migrationBuilder.DropTable(
                 name: "EmpAuths");
 
             migrationBuilder.DropTable(
@@ -201,6 +234,9 @@ namespace EMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "Payrolls");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.Migrations
 {
     [DbContext(typeof(EMSDbContext))]
-    [Migration("20241205064813_first")]
-    partial class first
+    [Migration("20241205135732_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,6 +69,23 @@ namespace EMS.Migrations
                     b.HasKey("DeptID");
 
                     b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("EMS.Models.Designation", b =>
+                {
+                    b.Property<int>("DesignationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("DesignationID"));
+
+                    b.Property<string>("DesignationName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("DesignationID");
+
+                    b.ToTable("Designations");
                 });
 
             modelBuilder.Entity("EMS.Models.EmpAuth", b =>
@@ -223,6 +240,23 @@ namespace EMS.Migrations
                     b.HasKey("EmpID");
 
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("EMS.Models.Location", b =>
+                {
+                    b.Property<int>("LocationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("LocationID"));
+
+                    b.Property<string>("LocationName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("LocationID");
+
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("EMS.Models.Payroll", b =>
