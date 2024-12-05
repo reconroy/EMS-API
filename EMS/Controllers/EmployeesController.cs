@@ -25,7 +25,16 @@ namespace EMS.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            var employees = await _context.Employees.ToListAsync();
+            return employees.Select(e => new Employee
+            {
+                EmpID = e.EmpID,
+                FullName = e.FullName,
+                // ... other properties ...
+                DOB = DateOnly.ParseExact(e.DOB.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
+                DOJ = DateOnly.ParseExact(e.DOJ.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
+                // ... other properties ...
+            }).ToList();
         }
 
         // GET: api/Employees/5
@@ -39,7 +48,15 @@ namespace EMS.Controllers
                 return NotFound();
             }
 
-            return employee;
+            return new Employee
+            {
+                EmpID = employee.EmpID,
+                FullName = employee.FullName,
+                // ... other properties ...
+                DOB = DateOnly.ParseExact(employee.DOB.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
+                DOJ = DateOnly.ParseExact(employee.DOJ.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
+                // ... other properties ...
+            };
         }
 
         // PUT: api/Employees/5
