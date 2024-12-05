@@ -14,6 +14,7 @@ namespace EMS.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Designation> Designations { get; set; }
+        public DbSet<Banks> Banks { get; set; }
 
         public EMSDbContext(DbContextOptions<EMSDbContext> options) : base(options) 
         {
