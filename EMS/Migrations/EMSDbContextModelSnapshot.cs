@@ -187,9 +187,8 @@ namespace EMS.Migrations
                     b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Designation")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Designation")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
@@ -248,9 +247,8 @@ namespace EMS.Migrations
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
-                    b.Property<string>("WorkingLocation")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("WorkingLocation")
+                        .HasColumnType("int");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("tinyint(1)");

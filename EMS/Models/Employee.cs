@@ -49,7 +49,7 @@ namespace EMS.Models
 
         public int RoleID { get; set; }
 
-        public string Designation { get; set; }
+        public int Designation { get; set; }
 
         public string AadhaarNumber { get; set; }
 
@@ -57,6 +57,6 @@ namespace EMS.Models
 
         public bool isActive { get; set; } = true;
 
-        public string WorkingLocation { get; set; }
+        public int WorkingLocation { get; set; }
     }
 }

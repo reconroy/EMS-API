@@ -30,10 +30,8 @@ namespace EMS.Controllers
             {
                 EmpID = e.EmpID,
                 FullName = e.FullName,
-                // ... other properties ...
                 DOB = DateOnly.ParseExact(e.DOB.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
                 DOJ = DateOnly.ParseExact(e.DOJ.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
-                // ... other properties ...
             }).ToList();
         }
 
@@ -52,10 +50,10 @@ namespace EMS.Controllers
             {
                 EmpID = employee.EmpID,
                 FullName = employee.FullName,
-                // ... other properties ...
+
                 DOB = DateOnly.ParseExact(employee.DOB.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
                 DOJ = DateOnly.ParseExact(employee.DOJ.ToString("dd/MM/yyyy"), "dd/MM/yyyy"),
-                // ... other properties ...
+          
             };
         }
 
