@@ -17,36 +17,48 @@ namespace EMS.Services
 
         public string SendEmail(string to, string subject, string body)
         {
-            string senderEmail = _configuration["EmailSettings:Email"];
-            string senderPassword = _configuration["EmailSettings:Password"];
-            string smtpServer = _configuration["EmailSettings:Host"];
-            int smtpPort = _configuration.GetValue<int>("EmailSettings:Port");
-
-            var smtpClient = new SmtpClient(smtpServer)
-            {
-                Port = smtpPort,
-                Credentials = new NetworkCredential(senderEmail, senderPassword),
-                EnableSsl = true,
-            };
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(senderEmail),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true,
-            };
-
-            mailMessage.To.Add(to);
             try
             {
+                string senderEmail = _configuration["EmailSettings:Email"] 
+                    ?? throw new InvalidOperationException("Email address not configured");
+                    
+                string senderPassword = _configuration["EmailSettings:Password"]
+                    ?? throw new InvalidOperationException("Email password not configured");
+                    
+                string smtpServer = _configuration["EmailSettings:Host"]
+                    ?? throw new InvalidOperationException("SMTP host not configured");
+                    
+                int smtpPort = _configuration.GetValue<int>("EmailSettings:Port");
+                if (smtpPort <= 0)
+                {
+                    smtpPort = 587; // Default to standard TLS port if not configured
+                }
+
+                var smtpClient = new SmtpClient(smtpServer)
+                {
+                    Port = smtpPort,
+                    Credentials = new NetworkCredential(senderEmail, senderPassword),
+                    EnableSsl = true,
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+                };
+
+                mailMessage.To.Add(to);
+                
                 smtpClient.Send(mailMessage);
-                return ("email sent");
+                return "Email sent successfully";
             }
             catch (Exception ex)
             {
-               /* _logger.LogError($"{ex}", $"{ex.Message}", "EmailService");*/
-                return (ex.Message);
+                // Log the full exception details for debugging
+                Console.WriteLine($"Email sending failed: {ex}");
+                return $"Failed to send email: {ex.Message}";
             }
         }
     }

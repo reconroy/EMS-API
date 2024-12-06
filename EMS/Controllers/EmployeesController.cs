@@ -58,6 +58,27 @@ namespace EMS.Controllers
                 return BadRequest();
             }
 
+            // Validate Mobile Number
+            if (await _context.Employees.AnyAsync(e => 
+                e.Mobile1 == employee.Mobile1 && e.EmpID != employee.EmpID))
+            {
+                return BadRequest(new { errors = new { Mobile = "This mobile number is already registered" } });
+            }
+
+            // Validate Aadhaar Number
+            if (await _context.Employees.AnyAsync(e => 
+                e.AadhaarNumber == employee.AadhaarNumber && e.EmpID != employee.EmpID))
+            {
+                return BadRequest(new { errors = new { Aadhaar = "This Aadhaar number is already registered" } });
+            }
+
+            // Validate PAN Number
+            if (await _context.Employees.AnyAsync(e => 
+                e.PanNumber == employee.PanNumber && e.EmpID != employee.EmpID))
+            {
+                return BadRequest(new { errors = new { PAN = "This PAN number is already registered" } });
+            }
+
             _context.Entry(employee).State = EntityState.Modified;
 
             try
@@ -84,6 +105,25 @@ namespace EMS.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+            // Validate Mobile Number
+            if (await _context.Employees.AnyAsync(e => e.Mobile1 == employee.Mobile1))
+            {
+                return BadRequest(new { errors = new { Mobile = "This mobile number is already registered" } });
+            }
+
+            // Validate Aadhaar Number
+            if (await _context.Employees.AnyAsync(e => e.AadhaarNumber == employee.AadhaarNumber))
+            {
+                return BadRequest(new { errors = new { Aadhaar = "This Aadhaar number is already registered" } });
+            }
+
+            // Validate PAN Number
+            if (await _context.Employees.AnyAsync(e => e.PanNumber == employee.PanNumber))
+            {
+                return BadRequest(new { errors = new { PAN = "This PAN number is already registered" } });
+            }
+
+            // If all validations pass, proceed with creating the employee
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
