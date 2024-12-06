@@ -21,12 +21,13 @@ namespace EMS.Migrations
                 {
                     AttendanceID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    EmpId = table.Column<int>(type: "int", nullable: false),
+                    EmpID = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
                     Status = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CheckInTime = table.Column<TimeOnly>(type: "time(6)", nullable: false),
-                    CheckOutTime = table.Column<TimeOnly>(type: "time(6)", nullable: false)
+                    CheckOutTime = table.Column<TimeOnly>(type: "time(6)", nullable: false),
+                    TotalDuration = table.Column<TimeSpan>(type: "time(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,6 +174,48 @@ namespace EMS.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "LnABalances",
+                columns: table => new
+                {
+                    LnABID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmpID = table.Column<int>(type: "int", nullable: false),
+                    MonthYear = table.Column<string>(type: "varchar(7)", maxLength: 7, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    OpeningBalance = table.Column<double>(type: "double", nullable: false),
+                    TotalDeduction = table.Column<double>(type: "double", nullable: false),
+                    ClosingBalance = table.Column<double>(type: "double", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LnABalances", x => x.LnABID);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "LoansandAdvances",
+                columns: table => new
+                {
+                    LnAID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmpID = table.Column<int>(type: "int", nullable: false),
+                    LnADate = table.Column<DateOnly>(type: "date", nullable: false),
+                    AmountGiven = table.Column<double>(type: "double", nullable: false),
+                    DeductionAmount = table.Column<double>(type: "double", nullable: false),
+                    DeductionStartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    DeductionFrequencyID = table.Column<int>(type: "int", nullable: false),
+                    isActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    MonthYear = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsDeductionComplete = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoansandAdvances", x => x.LnAID);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Locations",
                 columns: table => new
                 {
@@ -198,13 +241,13 @@ namespace EMS.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     BasicSalary = table.Column<double>(type: "double", nullable: false),
                     Increament = table.Column<double>(type: "double", nullable: false),
-                    IncreamentDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    AdvanceGiven = table.Column<double>(type: "double", nullable: false),
-                    AdvanceDeduction = table.Column<double>(type: "double", nullable: false),
+                    IncreamentDate = table.Column<DateOnly>(type: "date", nullable: true),
                     EPF = table.Column<double>(type: "double", nullable: false),
                     ESI = table.Column<double>(type: "double", nullable: false),
                     RD = table.Column<double>(type: "double", nullable: false),
-                    HI = table.Column<double>(type: "double", nullable: false)
+                    HI = table.Column<double>(type: "double", nullable: false),
+                    MonthYear = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -226,6 +269,34 @@ namespace EMS.Migrations
                     table.PrimaryKey("PK_Roles", x => x.RoleId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Uploads",
+                columns: table => new
+                {
+                    UPID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    EmpID = table.Column<int>(type: "int", nullable: false),
+                    ImagePath = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AadharPath = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PanPath = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PassbookPath = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Uploads", x => x.UPID);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LnABalances_EmpID_MonthYear_TotalDeduction",
+                table: "LnABalances",
+                columns: new[] { "EmpID", "MonthYear", "TotalDeduction" },
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -253,6 +324,12 @@ namespace EMS.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
+                name: "LnABalances");
+
+            migrationBuilder.DropTable(
+                name: "LoansandAdvances");
+
+            migrationBuilder.DropTable(
                 name: "Locations");
 
             migrationBuilder.DropTable(
@@ -260,6 +337,9 @@ namespace EMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Uploads");
         }
     }
 }

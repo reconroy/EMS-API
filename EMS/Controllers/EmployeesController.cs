@@ -87,7 +87,7 @@ namespace EMS.Controllers
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
-            if(employee.RoleID == 2)
+            if(employee.RoleID == 1 || employee.RoleID == 2)
             {
                 string generatedpassword = PasswordGenerate.GeneratePassword();
                 string encpass = Sha256Hasher.ComputeSHA256Hash(generatedpassword);
