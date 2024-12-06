@@ -15,10 +15,22 @@ namespace EMS.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Designation> Designations { get; set; }
         public DbSet<Banks> Banks { get; set; }
-
+        public DbSet<LoansandAdvance> LoansandAdvances { get; set; }
+        public DbSet<LnABalance> LnABalances { get; set; }
         public EMSDbContext(DbContextOptions<EMSDbContext> options) : base(options) 
         {
 
         }
+ 	protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<LnABalance>()
+                .HasIndex(l => new { l.EmpID, l.MonthYear, l.TotalDeduction })
+                .IsUnique();
+
+        }
+        public DbSet<EMS.Models.Uploads> Uploads { get; set; } = default!;
+
     }
 }

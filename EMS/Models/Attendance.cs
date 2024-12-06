@@ -9,7 +9,7 @@ namespace EMS.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AttendanceID { get; set; }
 
-        public int EmpId { get; set; }
+        public int EmpID { get; set; }
         
         public DateOnly Date {  get; set; }
         
@@ -18,5 +18,7 @@ namespace EMS.Models
         public TimeOnly CheckInTime { get; set; }
         
         public TimeOnly CheckOutTime { get; set; }
+
+        public TimeSpan TotalDuration { get; set; }
     }
 }
