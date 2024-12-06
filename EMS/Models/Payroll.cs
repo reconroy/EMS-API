@@ -15,13 +15,9 @@ namespace EMS.Models
 
         public double BasicSalary { get; set; }
 
-        public double Increament { get; set; }
+        public double Increament { get; set; } = 0;
 
-        public DateOnly IncreamentDate { get; set; }
-
-        public double AdvanceGiven { get; set; }
-
-        public double AdvanceDeduction { get; set; }
+        public DateOnly? IncreamentDate { get; set; }
 
         public double EPF {  get; set; }
 
@@ -30,5 +26,7 @@ namespace EMS.Models
         public double RD { get; set; }
 
         public double HI { get; set; }
+
+        public string MonthYear { get; set; }
     }
 }

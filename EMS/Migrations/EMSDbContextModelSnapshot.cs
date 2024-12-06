@@ -39,12 +39,15 @@ namespace EMS.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<int>("EmpId")
+                    b.Property<int>("EmpID")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<TimeSpan>("TotalDuration")
+                        .HasColumnType("time(6)");
 
                     b.HasKey("AttendanceID");
 
@@ -258,6 +261,80 @@ namespace EMS.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("EMS.Models.LnABalance", b =>
+                {
+                    b.Property<int>("LnABID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("LnABID"));
+
+                    b.Property<double>("ClosingBalance")
+                        .HasColumnType("double");
+
+                    b.Property<int>("EmpID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MonthYear")
+                        .IsRequired()
+                        .HasMaxLength(7)
+                        .HasColumnType("varchar(7)");
+
+                    b.Property<double>("OpeningBalance")
+                        .HasColumnType("double");
+
+                    b.Property<double>("TotalDeduction")
+                        .HasColumnType("double");
+
+                    b.HasKey("LnABID");
+
+                    b.HasIndex("EmpID", "MonthYear", "TotalDeduction")
+                        .IsUnique();
+
+                    b.ToTable("LnABalances");
+                });
+
+            modelBuilder.Entity("EMS.Models.LoansandAdvance", b =>
+                {
+                    b.Property<int>("LnAID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("LnAID"));
+
+                    b.Property<double>("AmountGiven")
+                        .HasColumnType("double");
+
+                    b.Property<double>("DeductionAmount")
+                        .HasColumnType("double");
+
+                    b.Property<int>("DeductionFrequencyID")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("DeductionStartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("EmpID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeductionComplete")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateOnly>("LnADate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("MonthYear")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("LnAID");
+
+                    b.ToTable("LoansandAdvances");
+                });
+
             modelBuilder.Entity("EMS.Models.Location", b =>
                 {
                     b.Property<int>("LocationID")
@@ -283,12 +360,6 @@ namespace EMS.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PrID"));
 
-                    b.Property<double>("AdvanceDeduction")
-                        .HasColumnType("double");
-
-                    b.Property<double>("AdvanceGiven")
-                        .HasColumnType("double");
-
                     b.Property<double>("BasicSalary")
                         .HasColumnType("double");
 
@@ -307,8 +378,12 @@ namespace EMS.Migrations
                     b.Property<double>("Increament")
                         .HasColumnType("double");
 
-                    b.Property<DateOnly>("IncreamentDate")
+                    b.Property<DateOnly?>("IncreamentDate")
                         .HasColumnType("date");
+
+                    b.Property<string>("MonthYear")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PayrollType")
                         .IsRequired()
@@ -337,6 +412,34 @@ namespace EMS.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("EMS.Models.Uploads", b =>
+                {
+                    b.Property<int>("UPID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("UPID"));
+
+                    b.Property<string>("AadharPath")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("EmpID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PanPath")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PassbookPath")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UPID");
+
+                    b.ToTable("Uploads");
                 });
 #pragma warning restore 612, 618
         }
